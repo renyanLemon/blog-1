@@ -39,11 +39,32 @@ const newBlog = (blogData = {}) => {
 
 const updateBlog = (id, blogData = {}) => {
     //blogData 是一个博客对象，包含 title，content属性
-    return true
+    const {title, content} = blogData
+    const createTime = Date.now()
+
+    const sql = `
+        update blogs set title='${title}', content='${content}' where id=${id}
+    `
+    
+    return exec(sql).then(updataData => {
+        if(updataData.affectedRows > 0) {
+            return true
+        }
+        return false
+    })
 }
 
-const delBlog = (id) => {
-    return true
+const delBlog = (id, author) => {
+    const sql = `
+        delete from blogs where id='${id}' and author='${author}'
+    `
+
+    return exec(sql).then(delData => {
+        if(delData.affectedRows > 0) {
+            return true
+        }
+        return false
+    })
 }
 
 module.exports = {
